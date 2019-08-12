@@ -8,6 +8,10 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=True)
 
+    posts = db.relationship('Post',
+                            foreign_keys='Post.author_id',
+                            backref='author')
+
 
 class Post(db.Model):
 
@@ -15,3 +19,4 @@ class Post(db.Model):
     title = db.Column(db.String(120), unique=True, nullable=False)
     subtitle = db.Column(db.String(240), nullable=False)
     text = db.Column(db.Text, nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
