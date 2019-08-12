@@ -1,2 +1,4 @@
 *env
-settings.json 
+settings.json
+*.sqlite3
+__pycache__ 
