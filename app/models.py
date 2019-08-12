@@ -1,6 +1,13 @@
 from .extentions import db
 
 
+roles = db.Table('roles',
+                 db.Column('user_id', db.Integer, db.ForeignKey('user.id'),
+                           primary_key=True),
+                 db.Column('role_id', db.Integer, db.ForeignKey('role.id'),
+                           primary_key=True)
+                 )
+
 tags = db.Table('tags',
                 db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'),
                           primary_key=True),
@@ -19,6 +26,15 @@ class User(db.Model):
     posts = db.relationship('Post',
                             foreign_keys='Post.author_id',
                             backref='author')
+
+    roles = db.relationship('Role', secondary=roles, lazy='subquery',
+                            backref=db.backref('users', lazy=True))
+
+
+class Role(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
 
 
 class Post(db.Model):
