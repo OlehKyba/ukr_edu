@@ -27,6 +27,7 @@ class Post(db.Model):
     title = db.Column(db.String(120), unique=True, nullable=False)
     subtitle = db.Column(db.String(240), nullable=False)
     text = db.Column(db.Text, nullable=False)
+    image = db.Column(db.String(100), nullable=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     tags = db.relationship('Tag', secondary=tags, lazy='subquery',
