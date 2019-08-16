@@ -1,4 +1,5 @@
 from .extentions import db
+from datetime import datetime
 
 
 roles = db.Table('roles',
@@ -28,7 +29,7 @@ class User(db.Model):
                             backref='author')
 
     roles = db.relationship('Role', secondary=roles, lazy='subquery',
-                            backref=db.backref('users', lazy=True))
+                            backref=db.backref('users'))
 
 
 class Role(db.Model):
@@ -44,6 +45,7 @@ class Post(db.Model):
     subtitle = db.Column(db.String(240), nullable=False)
     text = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(100), nullable=True)
+    date = db.Column(db.DateTime, default=datetime.now())
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     tags = db.relationship('Tag', secondary=tags, lazy='subquery',
