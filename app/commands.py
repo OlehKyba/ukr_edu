@@ -24,13 +24,15 @@ def drop_tables():
 def create_test_db():
     admin = User(
         name='admin',
-        password='admin',
     )
+
+    admin.set_password('admin')
 
     student = User(
         name='oleh',
-        password='12345',
     )
+
+    student.set_password('12345')
 
     users = [admin, student]
 

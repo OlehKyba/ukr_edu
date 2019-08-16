@@ -1,5 +1,6 @@
 from .extentions import db
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 roles = db.Table('roles',
@@ -30,6 +31,12 @@ class User(db.Model):
 
     roles = db.relationship('Role', secondary=roles, lazy='subquery',
                             backref=db.backref('users'))
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def is_correct_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 class Role(db.Model):
