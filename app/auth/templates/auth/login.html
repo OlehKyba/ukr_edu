@@ -1,0 +1,52 @@
+{% from '_alerts_macros.j2' import alert %}
+{% extends 'base.html' %}
+
+{% block title %}
+    Вхід
+{% endblock  %}
+
+{% block content %}
+    <!-- Login Form -->
+
+    {{alert('mx-5 my-3')}}
+    <section class="login-form container py-5 mt-5">
+        <div class="row d-flex justify-content-center">
+            <form class="d-flex flex-column justify-content-center" method="POST">
+                {{ login_form.hidden_tag() }}
+                <div class="form-group">
+                    {{ login_form.name.label(for="mainLoginInput") }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        {{ login_form.name(class_="form-control", id="mainLoginInput", placeholder="Введіть логін") }}
+                        {% for error in login_form.name.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ login_form.password.label(for="mainPasswordInput") }}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                        {{ login_form.password(class_="form-control", id="mainPasswordInput", placeholder="Пароль") }}
+                    </div>
+                </div>
+                <div class="form-group form-check">
+                    {{ login_form.is_remember(class_="form-check-input", id="mainLoginCheck") }}
+                    {{ login_form.is_remember.label(class_="form-check-label", for="mainLoginCheck") }}
+                </div>
+                {{ login_form.submit(class_="btn btn-primary", id="mainSubmit") }}
+            </form>
+        </div>
+    </section>
+
+{% endblock  %}
