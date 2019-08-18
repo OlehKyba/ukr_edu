@@ -7,6 +7,12 @@ from app.models import User
 
 auth = Blueprint('auth', __name__, template_folder='templates/auth')
 
+config_login = {
+    'login_view': 'auth.login',
+    'login_message': 'Ви маєте зайти!',
+    'login_message_category': 'warning'
+}
+
 from . import routes
 
 
