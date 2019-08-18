@@ -1,8 +1,8 @@
 from flask import Flask
 
-from .extentions import db
+from .extentions import db, login
 from .commands import create_tables, drop_tables, create_test_db
-from app.auth import auth
+from app.auth import auth, load_user
 
 
 def create_app(config_file='settings.py'):
@@ -12,6 +12,10 @@ def create_app(config_file='settings.py'):
 
     # Extentions
     db.init_app(app)
+    login.init_app(app)
+
+    # Extentions config
+    login.user_loader(load_user)
 
     # Commands
     app.cli.add_command(create_tables)
@@ -21,8 +25,7 @@ def create_app(config_file='settings.py'):
     # Bluprints
     app.register_blueprint(auth)
 
-    with app.app_context():
-
+    with app.app_context() as context:
         # Routes for main part of app.
         from . import routes
 

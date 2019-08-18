@@ -5,4 +5,4 @@ from .models import Post
 @current_app.route("/")
 def index():
     posts = Post.query.order_by(Post.date.desc()).limit(3)
-    return render_template('index.html', current_user=False, posts=posts)
+    return render_template('index.html', posts=posts)
