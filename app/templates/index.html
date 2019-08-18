@@ -1,3 +1,5 @@
+{% from '_alerts_macros.j2' import  alert%}
+
 {% extends 'base.html' %}
 
 {% block title %}
@@ -10,6 +12,8 @@
 
 {% block content %}
 <!-- Quote of Taras Shecchenko. -->
+{{ alert("m-0") }}
+
 <article class="quote bg-warning py-5">
     <div class="container">
         <div class="row justify-content-md-around align-items-center">
