@@ -7,6 +7,8 @@ from app.models import User
 
 auth = Blueprint('auth', __name__, template_folder='templates/auth')
 
+from . import routes
+
 
 @auth.app_context_processor
 def auth_context():
