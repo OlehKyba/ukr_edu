@@ -9,7 +9,7 @@ def _memoized(func):
 
     @wraps(func)
     def cashe(column, length):
-        clsname = f'Slug{column.capitalize()}{str(length)}'
+        clsname = _slug_name(column, length)
         cls = cls_dict.get(clsname)
 
         if cls:
@@ -37,8 +37,15 @@ def _set_factory(column):
 
 @_memoized
 def SlugMixin(column: str, length, clsname=None):
-    slug = type(f'Slug{column.capitalize()}{str(length)}', clsname, (Model, ), {
+    if not clsname:
+        clsname = _slug_name(column, length)
+
+    slug = type(clsname, (Model, ), {
         'slug': sa.Column(sa.String(length), unique=True),
         '__setattr__': _set_factory(column),
     })
     return slug
+
+
+def _slug_name(column, length):
+    return f'Slug{column.capitalize()}{str(length)}'
