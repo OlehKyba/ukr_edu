@@ -30,7 +30,7 @@ class LoginView(MethodView):
             if not user or not user.is_correct_password(form.password.data):
                 invalid_message = Message(
                     'Некоректні логін або пароль! ').link(
-                    'Забули пароль?', 'index').result()
+                    'Забули пароль?', href='index', class_='alert-link').result()
 
                 flash(invalid_message, category='danger')
 
