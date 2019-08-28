@@ -14,7 +14,7 @@ const getToday = () => {
 
 
 inputImageFile.addEventListener('input', () => (spanFileName.innerHTML = inputImageFile.value, console.log(inputImageFile.value)));
-inputDate.value = getToday();
+inputDate.value = inputDate.value ? inputDate.value : getToday();
 
 
 
