@@ -1,3 +1,4 @@
+{% from '_alerts_macros.j2' import  alert%}
 {% extends 'base.html' %}
 
 {% block title %}
@@ -10,10 +11,11 @@
 {% endblock  %}
 
 {% block content %}
+{{ alert('m-3') }}
 <article class="container new-post pt-5">
     <div class="raw">
-        <form class="new-post-form col-10 mx-auto">
-
+        <form class="new-post-form col-10 mx-auto" method="{{ method }}">
+            {{ post_form.csrf_token }}
             <div class="form-group">
                 {{ post_form.title.label(for="inputTitle") }}
                 {# <label for="inputTitle">Заголовок</label> #}
