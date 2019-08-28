@@ -66,3 +66,7 @@ class Tag(db.Model, SlugMixin('value', 100)):
 
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(100), nullable=False, unique=True)
+
+
+def tag_query_factory():
+    return Tag.query
