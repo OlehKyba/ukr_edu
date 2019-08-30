@@ -8,11 +8,12 @@ pep8 = "*"
 autopep8 = "*"
 
 [packages]
-flask = "==1.1.1"
+flask = "*"
 python-dotenv = "*"
 flask-sqlalchemy = "*"
 flask-wtf = "*"
 flask-login = "*"
+python-slugify = "*"
 
 [requires]
 python_version = "3.7"
