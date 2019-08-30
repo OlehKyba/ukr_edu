@@ -34,8 +34,10 @@ def post_action(strategy_factory):
             flash(*strategy.message)
             return redirect(strategy.next_page(post))
 
-        return render_template('create-post.html', post_form=post_form,
-                               method=strategy.method)
+        return render_template('create-post.html',
+                               post_form=post_form,
+                               title=strategy.title,
+                               )
 
     return action
 
@@ -43,7 +45,9 @@ def post_action(strategy_factory):
 PostStrategy = namedtuple('PostStrategy',
                           ['post_factory',
                            'next_page',
-                           'message'])
+                           'message',
+                           'title',
+                           ])
 
 
 @post_action
@@ -53,6 +57,7 @@ def create_post():
         post_factory=lambda slug: Post(),
         next_page=lambda post: url_for('posts_bp.post', slug=post.slug),
         message=('Створенно новий пост!', 'success'),
+        title='Новий пост'
     )
     return create_strategy
 
@@ -65,6 +70,7 @@ def update_post():
             slug=slug).first_or_404(),
         next_page=lambda post: url_for('posts_bp.post', slug=post.slug),
         message=('Змінено цей пост!', 'primary'),
+        title='Редагування'
     )
 
     return update_strategy
