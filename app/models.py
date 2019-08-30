@@ -68,5 +68,7 @@ class Tag(db.Model, SlugMixin('value', 100)):
     value = db.Column(db.String(100), nullable=False, unique=True)
 
 
-def tag_query_factory():
-    return Tag.query
+def get_or_create(model, session=db.session, **kwargs):
+    # If a new entity is created, it needs db.session.commit().
+    exists_model = session.query(model).filter_by(**kwargs).first()
+    return exists_model or model(**kwargs)
