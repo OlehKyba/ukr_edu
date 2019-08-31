@@ -16,4 +16,6 @@ posts.add_url_rule('/edit/<slug>',
 @posts.route('/<slug>')
 def post(slug):
     post = Post.query.filter_by(slug=slug).first_or_404()
-    return f'Hellow slug {post.slug}!'
+    new_posts = Post.query.filter(
+        id != post.id).order_by(Post.date.desc()).limit(3)
+    return render_template('post.html', post=post, new_posts=new_posts)
