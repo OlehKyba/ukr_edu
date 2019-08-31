@@ -10,6 +10,20 @@ from collections import namedtuple
 from functools import wraps
 
 
+class TagInputAdapter:
+
+    @staticmethod
+    def taglist_to_data(taglist: list) -> str:
+        values = [tag.value for tag in taglist]
+        return ','.join(values)
+
+    @staticmethod
+    def data_to_taglist(data: str) -> list:
+        values = data.split(',')
+        taglist = [get_or_create(Tag, value=value) for value in values]
+        return taglist
+
+
 def post_action(strategy_factory):
 
     @wraps(strategy_factory)
@@ -19,13 +33,11 @@ def post_action(strategy_factory):
         post_form = PostForm(obj=post)
 
         if request.method == 'GET':
-            tags = [tag.value for tag in post.tags]
-            post_form.tags.data = ','.join(tags)
+            post_form.tags.data = TagInputAdapter.taglist_to_data(post.tags)
 
         if post_form.validate_on_submit() and request.method == 'POST':
-            values = post_form.tags.data.split(',')
-            post_form.tags.data = [get_or_create(Tag, value=value)
-                                   for value in values]
+            post_form.tags.data = TagInputAdapter.data_to_taglist(
+                post_form.tags.data)
 
             post_form.populate_obj(post)
             db.session.add(post)
