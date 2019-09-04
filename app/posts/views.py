@@ -7,7 +7,7 @@ from app.extentions import db
 
 from sqlalchemy.orm import subqueryload
 from collections import namedtuple
-from functools import wraps
+from functools import wraps, partial
 
 
 class TagInputAdapter:
@@ -54,35 +54,22 @@ def post_action(strategy_factory):
     return action
 
 
+def paginate(template, per_page=1):
+    def paginate_init(context_factory):
+        @wraps(context_factory)
+        def paginate_wraper(slug, page):
+            context = context_factory(slug, page)
+            base_query_obj = context['pages']
+            context['pages'] = base_query_obj.paginate(
+                page=page, per_page=per_page)
+            return render_template(template, **context)
+        return paginate_wraper
+    return paginate_init
+
+
 PostStrategy = namedtuple('PostStrategy',
                           ['post_factory',
                            'next_page',
                            'message',
                            'title',
                            ])
-
-
-@post_action
-def create_post():
-
-    create_strategy = PostStrategy(
-        post_factory=lambda slug: Post(),
-        next_page=lambda post: url_for('posts_bp.post', slug=post.slug),
-        message=('Створенно новий пост!', 'success'),
-        title='Новий пост'
-    )
-    return create_strategy
-
-
-@post_action
-def update_post():
-
-    update_strategy = PostStrategy(
-        post_factory=lambda slug: Post.query.filter_by(
-            slug=slug).first_or_404(),
-        next_page=lambda post: url_for('posts_bp.post', slug=post.slug),
-        message=('Змінено цей пост!', 'primary'),
-        title='Редагування'
-    )
-
-    return update_strategy
