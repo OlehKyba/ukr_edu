@@ -56,10 +56,10 @@ class Post(db.Model, SlugMixin('title', 120)):
     text = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(100), nullable=True)
     date = db.Column(db.DateTime, default=datetime.now())
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author_id = db.Column(db.Integer, db.ForeigKey('user.id'))
 
     tags = db.relationship('Tag', secondary=tags, lazy='subquery',
-                           backref=db.backref('posts', lazy=True))
+                           backref=db.backref('posts', lazy='dynamic'))
 
 
 class Tag(db.Model, SlugMixin('value', 100)):
