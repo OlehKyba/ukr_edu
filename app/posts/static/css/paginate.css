@@ -1,0 +1,25 @@
+body {
+    font-family: 'PT Sans', sans-serif;  
+}
+
+.title {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+/* Header */
+.navbar__logo {
+    height: 60px;
+}
+
+.navbar__item {
+    font-size: 20px;
+}
+
+@media (max-width: 767px) {
+    .card-columns {
+        -webkit-column-count: 1;
+        -moz-column-count: 1;
+        column-count: 1;
+    }
+}
