@@ -1,8 +1,9 @@
-from flask import render_template, url_for, flash
+from flask import render_template, url_for, flash, redirect
 
 from . import posts
 from .views import post_action, paginate, PostStrategy
 
+from app.extentions import db
 from app.models import Post, Tag
 from app.markup_messages import Message
 
@@ -41,6 +42,20 @@ def update_post():
     )
 
     return update_strategy
+
+
+@posts.route('/delete/<slug>')
+def delete_post(slug):
+    post = Post.query.filter_by(
+        slug=slug).first_or_404()
+
+    db.session.delete(post)
+    db.session.commit()
+
+    message = Message('Видалений пост "').strong(
+        post.title).text('" !').result()
+    flash(message, 'danger')
+    return redirect(url_for('posts_bp.all_posts'))
 
 
 @posts.route('/', defaults={'slug': 'all', 'page': 1})
