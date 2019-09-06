@@ -1,4 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request
+from flask_login import current_user
 
 from .forms import PostForm
 
@@ -40,6 +41,10 @@ def post_action(strategy_factory):
                 post_form.tags.data)
 
             post_form.populate_obj(post)
+
+            if not post.author:
+                post.author = current_user
+
             db.session.add(post)
             db.session.commit()
 
