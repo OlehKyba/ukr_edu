@@ -30,7 +30,7 @@ class User(db.Model, UserMixin):
 
     posts = db.relationship('Post',
                             foreign_keys='Post.author_id',
-                            backref='author')
+                            backref=db.backref('author', lazy='subquery'))
 
     roles = db.relationship('Role', secondary=roles, lazy='subquery',
                             backref=db.backref('users'))
@@ -40,6 +40,9 @@ class User(db.Model, UserMixin):
 
     def is_correct_password(self, password):
         return check_password_hash(self.password, password)
+
+    def is_author(self, post):
+        return post.author.id == self.id
 
 
 class Role(db.Model):
@@ -56,7 +59,7 @@ class Post(db.Model, SlugMixin('title', 120)):
     text = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(100), nullable=True)
     date = db.Column(db.DateTime, default=datetime.now())
-    author_id = db.Column(db.Integer, db.ForeigKey('user.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     tags = db.relationship('Tag', secondary=tags, lazy='subquery',
                            backref=db.backref('posts', lazy='dynamic'))
