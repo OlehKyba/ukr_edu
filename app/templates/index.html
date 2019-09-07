@@ -1,4 +1,5 @@
 {% from '_alerts_macros.j2' import  alert%}
+{% from '_post_macros.j2' import carusel_post %}
 
 {% extends 'base.html' %}
 
@@ -108,21 +109,7 @@
                 <div id="carouselControls" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         {% for post in posts %}
-                            <div class="carousel-item {% if loop.first %}active{% endif %}">
-                                <div class="raw latest-article__item card text-center text-black bg-warning">
-                                    <div class="card-header px-5">
-                                        <span>{{ post.date.strftime("%d/%m/%Y") }}</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ post.title }}</h5>
-                                        <p class="card-text">{{ post.subtitle }}</p>
-                                        <a class="btn btn-primary" href="{{ url_for('index') }}">
-                                            Детальніше
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            {{ carusel_post(post, current_user, is_active=loop.first ) }}
                         {% endfor %}
                     </div>
                     <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev"></a>
