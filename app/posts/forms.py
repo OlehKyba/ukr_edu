@@ -6,6 +6,7 @@ from wtforms import (StringField,
                      FileField,
                      SelectMultipleField,
                      SubmitField)
+from flask_wtf.file import FileAllowed
 
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, Length
@@ -22,6 +23,14 @@ class _SubmitTagDateMixin(FlaskForm):
     submit = SubmitField('OK')
     tags = StringField('Введіть теги:', default='')
     date = DateField('Дата публікації:', default=datetime.now())
+    image = FileField(Message().span('Виберіть файл', id='fileName').result(
+    ), validators=[FileAllowed([
+        'jpg',
+        'png',
+        'svg',
+    ],
+        'Тільки зображення!',
+    )])
 
 
 settings = {
@@ -47,13 +56,9 @@ settings = {
             DataRequired(),
         ],
     },
-
-    'image': {
-        'label': Message().span('Виберіть файл', id='fileName').result(),
-    },
 }
 
 PostForm = model_form(Post,
                       db_session=db.session,
                       base_class=_SubmitTagDateMixin,
-                      field_args=settings, exclude=['tags', 'date'])
+                      field_args=settings, exclude=['tags', 'date', '_image'])

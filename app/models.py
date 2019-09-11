@@ -3,7 +3,10 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+from app.settings import S3_IMG_BUCKET
 from app.sa_slug import SlugMixin
+from app.descriptors.files import FileDescriptor
+from app.descriptors.files.strategies import S3Strategy
 
 
 roles = db.Table('roles',
@@ -57,7 +60,8 @@ class Post(db.Model, SlugMixin('title', 120)):
     title = db.Column(db.String(120), unique=True, nullable=False)
     subtitle = db.Column(db.String(240), nullable=False)
     text = db.Column(db.Text, nullable=False)
-    image = db.Column(db.String(100), nullable=True)
+    _image = db.Column('image', db.String(100), nullable=True)
+    image = FileDescriptor(S3Strategy(S3_IMG_BUCKET), name_from='slug')
     date = db.Column(db.DateTime, default=datetime.now())
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 

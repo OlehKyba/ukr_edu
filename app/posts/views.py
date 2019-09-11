@@ -33,10 +33,7 @@ def post_action(strategy_factory):
         post = strategy.post_factory(slug)
         post_form = PostForm(obj=post)
 
-        if request.method == 'GET':
-            post_form.tags.data = TagInputAdapter.taglist_to_data(post.tags)
-
-        if post_form.validate_on_submit() and request.method == 'POST':
+        if post_form.validate_on_submit():
             post_form.tags.data = TagInputAdapter.data_to_taglist(
                 post_form.tags.data)
 
@@ -51,6 +48,7 @@ def post_action(strategy_factory):
             flash(*strategy.message)
             return redirect(strategy.next_page(post))
 
+        post_form.tags.data = TagInputAdapter.taglist_to_data(post.tags)
         return render_template('create-post.html',
                                post_form=post_form,
                                title=strategy.title,
