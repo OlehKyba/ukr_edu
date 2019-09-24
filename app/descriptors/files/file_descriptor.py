@@ -34,5 +34,14 @@ class FileDescriptor():
 
         filename = secure_filename(filename)
 
+        if getattr(instance, self.name):
+            self.__delete__(instance)
+
         self.strategy.save_file(file, filename)
         setattr(instance, self.name, filename)
+
+    def __delete__(self, instance):
+
+        filename = getattr(instance, self.name)
+        setattr(instance, self.name, None)
+        self.strategy.delete_file(filename)

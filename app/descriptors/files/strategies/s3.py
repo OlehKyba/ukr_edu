@@ -24,5 +24,9 @@ class S3Strategy():
         return url
 
     def save_file(self, file, filename):
-        self.bucket.put_object(Key=filename, Body=file)
-        return filename
+        response = self.bucket.put_object(Key=filename, Body=file)
+        return response
+
+    def delete_file(self, filename):
+        response = self.bucket.Object(filename).delete()
+        return response
