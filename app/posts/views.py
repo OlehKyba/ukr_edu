@@ -49,6 +49,11 @@ def post_action(strategy_factory):
             return redirect(strategy.next_page(post))
 
         post_form.tags.data = TagInputAdapter.taglist_to_data(post.tags)
+
+        for error_field in post_form.errors:
+            for error in post_form[error_field].errors:
+                flash(error, 'danger')
+
         return render_template('create-post.html',
                                post_form=post_form,
                                title=strategy.title,
@@ -73,6 +78,8 @@ def paginate(template, per_page=1):
 PostStrategy = namedtuple('PostStrategy',
                           ['post_factory',
                            'next_page',
-                           'message',
+                           'success_message',
+                           'error_message',
                            'title',
-                           ])
+                           ],
+                          )

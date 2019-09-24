@@ -23,7 +23,8 @@ def create_post():
     create_strategy = PostStrategy(
         post_factory=lambda slug: Post(),
         next_page=lambda post: url_for('posts_bp.post', slug=post.slug),
-        message=('Створенно новий пост!', 'success'),
+        success_message=('Створенно новий пост!', 'success'),
+        error_message=lambda message: (message, 'danger'),
         title='Новий пост'
     )
     return create_strategy
@@ -37,7 +38,8 @@ def update_post():
         post_factory=lambda slug: Post.query.filter_by(
             slug=slug).first_or_404(),
         next_page=lambda post: url_for('posts_bp.post', slug=post.slug),
-        message=('Змінено цей пост!', 'primary'),
+        success_message=('Змінено цей пост!', 'primary'),
+        error_message=lambda message: (message, 'danger'),
         title='Редагування'
     )
 

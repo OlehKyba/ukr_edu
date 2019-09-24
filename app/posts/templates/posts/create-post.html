@@ -14,7 +14,7 @@
 {{ alert('m-3') }}
 <article class="container new-post pt-5">
     <div class="raw">
-        <form class="new-post-form col-10 mx-auto" method="POST">
+        <form class="new-post-form col-10 mx-auto" method="POST" enctype="multipart/form-data">
             {{ post_form.csrf_token }}
             <div class="form-group">
                 {{ post_form.title.label(for="inputTitle") }}

@@ -29,7 +29,7 @@ class _SubmitTagDateMixin(FlaskForm):
         'png',
         'svg',
     ],
-        'Тільки зображення!',
+        'До статті можна прикріпити лише зображення!',
     )])
 
 
@@ -61,4 +61,10 @@ settings = {
 PostForm = model_form(Post,
                       db_session=db.session,
                       base_class=_SubmitTagDateMixin,
-                      field_args=settings, exclude=['tags', 'date', '_image'])
+                      field_args=settings,
+                      exclude=[
+                          'tags',
+                          'date',
+                          '_image',
+                      ],
+                      )
