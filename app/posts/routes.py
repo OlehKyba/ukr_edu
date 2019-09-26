@@ -1,4 +1,5 @@
 from flask import render_template, url_for, flash, redirect
+from flask_login import login_required
 
 from . import posts
 from .views import post_action, paginate, PostStrategy
@@ -8,6 +9,7 @@ from app.models import Post, Tag
 from app.markup_messages import Message
 
 
+# TODO: Normal protection of routes with different rights.
 @posts.route('article/<slug>')
 def post(slug):
     post = Post.query.filter_by(slug=slug).first_or_404()
@@ -17,6 +19,7 @@ def post(slug):
 
 
 @posts.route('/edit/', defaults={'slug': None}, methods=['GET', 'POST'])
+@login_required
 @post_action
 def create_post():
 
@@ -31,6 +34,7 @@ def create_post():
 
 
 @posts.route('/edit/<slug>', methods=['GET', 'POST'])
+@login_required
 @post_action
 def update_post():
 
@@ -47,6 +51,7 @@ def update_post():
 
 
 @posts.route('/delete/<slug>')
+@login_required
 def delete_post(slug):
     post = Post.query.filter_by(
         slug=slug).first_or_404()
