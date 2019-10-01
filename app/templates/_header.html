@@ -1,7 +1,7 @@
-{% macro button(text, href, data_toggle="", data_target="") %}
-    <a class="btn btn-warning my-2 my-sm-0 animated fadeInRight" href="{{ href }}"
+{% macro button(text, href, class="btn btn-warning", data_toggle="", data_target="") %}
+    <a class="{{ class }}" href="{{ href }}"
     data-toggle="{{ data_toggle }}" data-target="{{ data_target }}"
-    >{{ text }}</a>
+    >{{ text|safe }}</a>
 {% endmacro %}
 
 {% macro nav_link(text, href) %}
@@ -32,9 +32,15 @@
                         </ul>
 
                         {% if current_user.is_authenticated %}
-                            {{ button("Вихід", url_for('auth.logout')) }}
+                            
+                            {% set out_message = '{} <i class="fas fa-sign-out-alt"></i>'.format(current_user.name) %}
+                            {% set new_post = '<i class="card-text far fa-plus-square"></i>' %}
+                            <div>
+                                {{ button(out_message, url_for('auth.logout', next=url_for(request.endpoint, **request.view_args)), "btn btn-warning my-2 my-sm-0 animated fadeInRight") }}
+                                {{ button(new_post, url_for('posts_bp.create_post'), "btn btn-success my-2 my-sm-0 animated fadeInRight") }}
+                            </div>
                         {% else %}
-                            {{ button("Вхід", "#", "modal","#loginModal") }}
+                            {{ button("Вхід", "#", "btn btn-warning my-2 my-sm-0 animated fadeInRight", "modal","#loginModal") }}
                             <!-- Modal for login -->
                             <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle"
                                 aria-hidden="true">
@@ -50,7 +56,7 @@
                                             <!-- Login Form Start-->
                                             <section class="login-form container">
                                                 <div class="row d-flex justify-content-center">
-                                                    <form class="d-flex flex-column justify-content-center" method="POST" action="{{ url_for('auth.login') }}">
+                                                    <form class="d-flex flex-column justify-content-center" method="POST" action="{{ url_for('auth.login', next=url_for(request.endpoint, **request.view_args)) }}">
                                                         {{ header_form.hidden_tag() }}
                                                         <div class="form-group">
                                                             {{ header_form.name.label(for="loginInput") }}

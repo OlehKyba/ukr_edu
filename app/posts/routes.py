@@ -6,7 +6,7 @@ from .views import post_action, paginate, PostStrategy
 
 from app.extentions import db
 from app.models import Post, Tag
-from app.markup_messages import Message
+from app.utils.markup_messages import Message
 
 
 # TODO: Normal protection of routes with different rights.

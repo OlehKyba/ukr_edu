@@ -3,7 +3,7 @@ from flask import Flask
 from .extentions import db, login
 from .commands import create_tables, drop_tables, create_test_db
 
-from app.auth import auth, load_user, config_login
+from app.auth import auth, load_user, config_login, unauthorized_handler
 from app.posts import posts
 
 
@@ -18,6 +18,7 @@ def create_app(config_file='settings.py'):
 
     # Flask-Login config
     login.user_loader(load_user)
+    login.unauthorized_handler(unauthorized_handler)
     login.login_view = config_login['login_view']
     login.login_message = config_login['login_message']
     login.login_message_category = config_login['login_message_category']
@@ -30,7 +31,7 @@ def create_app(config_file='settings.py'):
     # Bluprints
     app.register_blueprint(auth)
     app.register_blueprint(posts, url_prefix='/posts')
-    with app.app_context() as context:
+    with app.app_context():
         # Routes for main part of app.
         from . import routes
 

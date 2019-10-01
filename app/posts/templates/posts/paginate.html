@@ -5,7 +5,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Пости
+Пости
 {% endblock %}
 
 {% block css %}
@@ -17,9 +17,14 @@
 
 <article class="articles-grid container py-3">
     <div class="card-columns">
+        {% if current_user.is_authenticated and pages.page == 1%}
+        <a class="card p-0 stretched-link btn btn-outline-success" href="{{ url_for('posts_bp.create_post') }}">
+            <i class="card-text far fa-plus-square fa-7x"></i>
+        </a>
+        {% endif %}
 
         {% for post in pages.items %}
-            {{ max_post(post, current_user, 'primary') }}
+        {{ max_post(post, current_user, 'primary') }}
         {% endfor %}
     </div>
 </article>

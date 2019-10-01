@@ -4,9 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
 from app.settings import S3_IMG_BUCKET
-from app.sa_slug import SlugMixin
-from app.descriptors.files import FileDescriptor
-from app.descriptors.files.strategies import S3Strategy
+from app.utils.sa_slug import SlugMixin
+from app.utils.descriptors.files import FileDescriptor
+from app.utils.descriptors.files.strategies import S3Strategy
 
 
 roles = db.Table('roles',

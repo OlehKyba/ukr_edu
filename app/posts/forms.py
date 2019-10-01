@@ -14,7 +14,7 @@ from wtforms.ext.sqlalchemy.orm import model_form
 
 from datetime import datetime
 
-from app.markup_messages import Message
+from app.utils.markup_messages import Message
 from app.models import Post
 from app.extentions import db
 

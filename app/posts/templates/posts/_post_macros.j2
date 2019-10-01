@@ -19,7 +19,7 @@
     <a href="{{ url_for('posts_bp.delete_post', slug=post.slug) }}" class="btn btn-danger">
         <i class="fas fa-trash"></i>
     </a>
-{% endif %}
+    {% endif %}
 {% endmacro %}
 
 {% macro _image_display(post) %}
@@ -67,7 +67,7 @@
 {% endmacro %}
 
 {% macro min_post(post, user, main_color) %}
-<div class="card">
+<div class="card border-{{ main_color }}">
     {% set header_class = 'pb-0 text-white bg-' + main_color %}
     {% call post_builder.build_header(header_class) %}
         {{ post_builder.build_title(post.title) }}
