@@ -1,5 +1,5 @@
 {% from '_alerts_macros.j2' import alert %}
-{% from '_post_macros.j2' import min_post %}
+{% from '_post_macros.j2' import min_post, admin_bottons, date_display %}
 
 {% extends 'base.html' %}
 
@@ -24,13 +24,24 @@
             <section class="post__body">
                 {{ post.text|safe }}
             </section>
-            <section class="post__tags">
-                {% for tag in post.tags %}
-                <a href="{{ url_for('posts_bp.tag_posts', slug=tag.slug) }}"
-                    class="badge badge-primary">{{ tag.value }}</a>
-                {% endfor %}
-            </section>
-
+            <div class="row d-flex justify-content-space-between pb-2">
+                <section class="post__tags col-sm-8 pb-2">
+                    {% for tag in post.tags %}
+                    <a href="{{ url_for('posts_bp.tag_posts', slug=tag.slug) }}"
+                        class="badge badge-primary">{{ tag.value }}</a>
+                    {% endfor %}
+                </section>
+                <div class="col-sm-4">
+                    <div class="d-flex justify-content-sm-end align-items-center">
+                        {{ date_display(post.date) }}
+                    </div>
+                </div>
+                {% if not current_user.is_anonymous and current_user.is_author(post) %}
+                <section class="post__admin-panel col-12">
+                    {{ admin_bottons(post.slug, "Змінити", "Видалити") }}
+                </section>
+                {% endif %}
+            </div>
         </article>
 
         <div class="col-lg-4 mt-5 scrollfix">

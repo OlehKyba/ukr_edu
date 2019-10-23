@@ -7,18 +7,23 @@
     </a>
 {% endmacro %}
 
+{% macro admin_bottons(slug, update_text="", del_text="") %}
+     <a href="{{ url_for('posts_bp.update_post', slug=slug) }}" class="btn btn-info">
+        {{ update_text }}
+        <i class="fas fa-pen"></i>
+    </a>
+
+    <a href="{{ url_for('posts_bp.delete_post', slug=slug) }}" class="btn btn-danger">
+        {{ del_text }}
+        <i class="fas fa-trash"></i>
+    </a>
+{% endmacro %}
 
 {% macro _button_panel(user, post, main_color) %}
     {% set info_color = 'outline-' + main_color %}
     {{ _info_button(post, info_color) }}
     {% if not user.is_anonymous and user.is_author(post) %}
-    <a href="{{ url_for('posts_bp.update_post', slug=post.slug) }}" class="btn btn-info">
-        <i class="fas fa-pen"></i>
-    </a>
-
-    <a href="{{ url_for('posts_bp.delete_post', slug=post.slug) }}" class="btn btn-danger">
-        <i class="fas fa-trash"></i>
-    </a>
+        {{ admin_bottons(post.slug) }}
     {% endif %}
 {% endmacro %}
 
@@ -40,9 +45,9 @@
     {% endcall %}
 {% endmacro %}
 
-{% macro _date_display(date, template='%d.%m.%Y') %}
-    <i class="fas fa-calendar-alt pr-1"></i>
-    {{ date.strftime(template) }}
+{% macro date_display(date, template='%d.%m.%Y') %}
+        <i class="fas fa-calendar-alt pr-1"></i>
+        {{ date.strftime(template) }}
 {% endmacro %}
 
 {% macro max_post(post, user, main_color) %}
@@ -61,7 +66,7 @@
     {% endcall %}
 
     {% call post_builder.build_footer("text-muted") %}
-        {{ _date_display(post.date) }}
+        {{ date_display(post.date) }}
     {% endcall %}
 </div>
 {% endmacro %}
@@ -91,7 +96,7 @@
     <div class="raw card text-center bg-{{ main_color }}">
         {% call post_builder.build_header("px-5") %}
             <span>
-                {{ _date_display(post.date) }}
+                {{ date_display(post.date) }}
             </span>
         {% endcall %}
 
