@@ -2,15 +2,19 @@ from flask import Flask
 
 from .extentions import db, login
 from .commands import create_tables, drop_tables, create_test_db
+from .celery_utils import init_celery
 
 from app.auth import auth, load_user, config_login, unauthorized_handler
 from app.posts import posts
 
 
-def create_app(config_file='settings.py'):
+def create_app(config_file='settings.py', **kwargs):
     app = Flask(__name__)
 
     app.config.from_pyfile(config_file)
+
+    if kwargs.get("celery"):
+        init_celery(kwargs.get("celery"), app)
 
     # Extentions
     db.init_app(app)
