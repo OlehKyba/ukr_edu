@@ -2,11 +2,11 @@ from .extentions import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+import enum
 
-from app.settings import S3_IMG_BUCKET
+from sqlalchemy.ext.hybrid import hybrid_method
+
 from app.utils.sa_slug import SlugMixin
-from app.utils.descriptors.files import FileDescriptor
-from app.utils.descriptors.files.strategies import S3Strategy
 
 
 roles = db.Table('roles',
@@ -60,8 +60,10 @@ class Post(db.Model, SlugMixin('title', 120)):
     title = db.Column(db.String(120), unique=True, nullable=False)
     subtitle = db.Column(db.String(240), nullable=False)
     text = db.Column(db.Text, nullable=False)
-    _image = db.Column('image', db.String(100), nullable=True)
-    image = FileDescriptor(S3Strategy(S3_IMG_BUCKET), name_from='slug')
+
+    image_id = db.Column(db.Integer, db.ForeignKey('file.id'))
+    image = db.relationship('File', lazy='subquery')
+
     date = db.Column(db.DateTime, default=datetime.now())
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
@@ -73,6 +75,27 @@ class Tag(db.Model, SlugMixin('value', 100)):
 
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(100), nullable=False, unique=True)
+
+
+class FileTypes(enum.Enum):
+
+    post_preview = 'post_preview'
+
+
+class File(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=True, nullable=False)
+    description = db.Column(db.String(240))
+    path = db.Column(db.String(240))
+    file_type = db.Column(db.Enum(FileTypes), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.now())
+
+    @hybrid_method
+    def link(self, **kwargs):
+        width = kwargs.get('width')
+        name = f'{width}/{self.name}' if width else self.name
+        return f'{self.path}/{name}'
 
 
 def get_or_create(model, session=db.session, **kwargs):
