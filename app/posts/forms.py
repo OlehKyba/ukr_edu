@@ -9,11 +9,12 @@ from wtforms.validators import DataRequired, Length
 from datetime import datetime
 
 from app.utils.markup_messages import Message
+from app.utils.form_fields import Fields
 
 
 class PostForm(FlaskForm):
     submit = SubmitField('OK')
-    tags = StringField('Введіть теги:', default='')
+    tags = Fields.TagList('Введіть теги:', default='')
     date = DateField('Дата публікації:', default=datetime.now())
     image = FileField(Message().span('Виберіть файл', id='fileName').result(
     ), validators=[FileAllowed([
@@ -31,7 +32,7 @@ class PostForm(FlaskForm):
 
     subtitle = StringField('Підзаголовок', validators=[
         DataRequired(),
-        Length(max=120),
+        Length(max=240),
     ])
 
     text = TextAreaField('Оснонвний текст статті', validators=[
