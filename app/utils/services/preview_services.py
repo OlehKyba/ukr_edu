@@ -6,7 +6,7 @@ class PreviewService:
         self.storage = s3
 
     def link(self, filename=None):
-        link = f'http//:{self.storage.name}.s3.amazonaws.com'
+        link = f'http://{self.storage.name}.s3.amazonaws.com'
         if filename:
             link += f'/{filename}'
         return link

@@ -18,7 +18,7 @@
             </section>
             {% if post.image %}
             <div class="d-flex justify-content-start">
-                <img class="img-fluid" src="{{ post.image }}">
+                <img class="img-fluid" src="{{ post.image.link() }}">
             </div>
             {% endif %}
             <section class="post__body">

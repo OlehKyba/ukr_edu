@@ -8,4 +8,4 @@ from .. import di_config
 
 class Storage(containers.DeclarativeContainer):
 
-    s3_preview_bucket = providers.Singleton(boto3.resource('s3').Bucket, di_config.aws.preview_bucket)
+    s3_preview_bucket = providers.ThreadSafeSingleton(boto3.resource('s3').Bucket, di_config.aws.preview_bucket)

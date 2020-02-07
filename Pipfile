@@ -16,6 +16,7 @@ flask-login = "*"
 python-slugify = "*"
 boto3 = "*"
 celery = {extras = ["redis"],version = "*"}
+dependency-injector = "*"
 
 [requires]
 python_version = "3.7"
