@@ -1,28 +1,13 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect
 from flask_login import current_user
 
 from .forms import PostForm
+from .async_tasks import upload_post_preview
 
-from app.models import Post, Tag, get_or_create
 from app.extentions import db
 
-from sqlalchemy.orm import subqueryload
 from collections import namedtuple
-from functools import wraps, partial
-
-
-class TagInputAdapter:
-
-    @staticmethod
-    def taglist_to_data(taglist: list) -> str:
-        values = [tag.value for tag in taglist]
-        return ','.join(values)
-
-    @staticmethod
-    def data_to_taglist(data: str) -> list:
-        values = data.split(',')
-        taglist = [get_or_create(Tag, value=value) for value in values]
-        return taglist
+from functools import wraps
 
 
 def post_action(strategy_factory):
@@ -34,10 +19,14 @@ def post_action(strategy_factory):
         post_form = PostForm(obj=post)
 
         if post_form.validate_on_submit():
-            post_form.tags.data = TagInputAdapter.data_to_taglist(
-                post_form.tags.data)
 
-            post_form.populate_obj(post)
+            image = post_form.image.data
+
+            post.title = post_form.title.data
+            post.date = post_form.date.data
+            post.subtitle = post_form.subtitle.data
+            post.text = post_form.text.data
+            post.tags = post_form.tags.data
 
             if not post.author:
                 post.author = current_user
@@ -45,10 +34,12 @@ def post_action(strategy_factory):
             db.session.add(post)
             db.session.commit()
 
-            flash(*strategy.message)
-            return redirect(strategy.next_page(post))
+            if image:
+                file_extension = image.filename.split('.')[-1]
+                upload_post_preview.delay(post.id, image.stream, file_extension)
 
-        post_form.tags.data = TagInputAdapter.taglist_to_data(post.tags)
+            flash(*strategy.success_message)
+            return redirect(strategy.next_page(post))
 
         for error_field in post_form.errors:
             for error in post_form[error_field].errors:
