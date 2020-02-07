@@ -2,7 +2,7 @@ from flask import Flask
 
 from .extentions import db, login
 from .commands import create_tables, drop_tables, create_test_db
-from .celery_utils import init_celery
+from app.utils import init_celery
 
 from app.auth import auth, load_user, config_login, unauthorized_handler
 from app.posts import posts

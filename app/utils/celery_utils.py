@@ -1,16 +1,4 @@
 from flask import has_app_context
-from celery import Celery
-from .settings import CELERY_BROKER_URL
-
-
-def make_celery(app_name):
-    celery = Celery(app_name, broker=CELERY_BROKER_URL)
-
-    celery.conf['CELERY_ACCEPT_CONTENT'] = ['pickle']
-    celery.conf['CELERY_TASK_SERIALIZER'] = 'pickle'
-    celery.conf['CELERY_RESULT_SERIALIZER'] = 'pickle'
-
-    return celery
 
 
 def init_celery(celery, app):
