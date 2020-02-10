@@ -1,6 +1,6 @@
 from flask import Flask
 
-from .extentions import db, login
+from .extentions import db, login, migrate
 from .commands import create_tables, drop_tables, create_test_db
 from app.utils import init_celery
 
@@ -19,6 +19,7 @@ def create_app(config_file='settings.py', **kwargs):
     # Extentions
     db.init_app(app)
     login.init_app(app)
+    migrate.init_app(app, db)
 
     # Flask-Login config
     login.user_loader(load_user)
