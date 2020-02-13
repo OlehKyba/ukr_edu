@@ -10,6 +10,8 @@ from datetime import datetime
 
 from app.utils.markup_messages import Message
 from app.utils.form_fields import Fields
+from app.utils.form_validators import NotExistModel, SlugLength
+from app.models import Post
 
 
 class PostForm(FlaskForm):
@@ -27,12 +29,14 @@ class PostForm(FlaskForm):
 
     title = StringField('Заголовок', validators=[
         DataRequired(),
-        Length(max=120),
+        Length(max=120, message='Заголовок не може бути більше 120 символів!'),
+        SlugLength(max=120, message='Через заголовок утворюється занадто велике посилання. Зменшіть заголовок!'),
+        NotExistModel(Post, 'title', 'Пост з таким заголовком вже існує!')
     ])
 
     subtitle = StringField('Підзаголовок', validators=[
         DataRequired(),
-        Length(max=240),
+        Length(max=240, message='Підзаголовок не може бути більше 240 символів!'),
     ])
 
     text = TextAreaField('Оснонвний текст статті', validators=[
