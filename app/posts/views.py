@@ -41,10 +41,6 @@ def post_action(strategy_factory):
             flash(*strategy.success_message)
             return redirect(strategy.next_page(post))
 
-        for error_field in post_form.errors:
-            for error in post_form[error_field].errors:
-                flash(error, 'danger')
-
         return render_template('create-post.html',
                                post_form=post_form,
                                title=strategy.title,

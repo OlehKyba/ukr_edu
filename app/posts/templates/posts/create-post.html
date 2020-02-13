@@ -1,4 +1,5 @@
 {% from '_alerts_macros.j2' import  alert%}
+{% from '_form_errors_macros.j2' import  field_error_handler%}
 {% extends 'base.html' %}
 
 {% block title %}
@@ -28,6 +29,7 @@
                     {{ post_form.title(class_="form-control", id="inputTitle", placeholder="Введіть заголовок") }}
                     {# <input type="text" class="form-control" id="inputTitle" placeholder="Введіть заголовок"> #}
                 </div>
+                {{ field_error_handler(post_form.title, 'my-2') }}
             </div>
 
             <div class="form-group">
@@ -42,6 +44,7 @@
                     {{ post_form.subtitle(class_="form-control", id="inputSubtitle", placeholder="Введіть підзаголовок") }}
                     {#<input type="text" class="form-control" id="inputSubtitle" placeholder="Введіть підзаголовок">#}
                 </div>
+                {{ field_error_handler(post_form.subtitle, 'my-2') }}
             </div>
 
             <div class="form-group">
@@ -49,6 +52,7 @@
                 {#<label for="inputArticleBody">Оснонвний текст статті</label>#}
                 {{ post_form.text(class_="form-control", id="inputArticleBody") }}
                 {#<textarea class="form-control" id="inputArticleBody"></textarea>#}
+                {{ field_error_handler(post_form.text, 'my-2') }}
             </div>
 
             <nav class="form-group">
@@ -110,6 +114,9 @@
                     </div>
 
                 </div>
+                {{ field_error_handler(post_form.tags) }}
+                {{ field_error_handler(post_form.image) }}
+                {{ field_error_handler(post_form.date) }}
             </nav>
 
             {{ post_form.submit(class_="btn btn-primary btn-block") }}
