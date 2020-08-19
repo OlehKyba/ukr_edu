@@ -1,0 +1,21 @@
+body {
+    font-family: 'PT Sans', sans-serif;  
+}
+
+.title {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+/* Header */
+.navbar__logo {
+    height: 60px;
+}
+
+.navbar__item {
+    font-size: 20px;
+}
+
+.input-group-text {
+    vertical-align: 50%;
+}

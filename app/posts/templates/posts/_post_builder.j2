@@ -1,0 +1,26 @@
+
+{% macro build_header(class_name='') %}
+<div class="card-header {{ class_name }}">
+    {{ caller() }}
+</div>
+{% endmacro %}
+
+{% macro build_footer(class_name='') %}
+<div class="card-footer {{ class_name }}">
+    {{ caller() }}
+</div>
+{% endmacro %}
+
+{% macro build_body(class_name='') %}
+    <div class="card-body {{ class_name }}">
+        {{ caller() }}
+    </div>
+{% endmacro %}
+
+{% macro build_title(text, class_name='') %}
+    <h5 class="card-title {{ class_name }}">{{ text }}</h5>
+{% endmacro %}
+
+{% macro build_text(class_name='') %}
+    <p class="card-text {{ class_name }}">{{ caller() }}</p>
+{% endmacro %}

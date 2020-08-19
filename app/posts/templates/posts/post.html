@@ -1,0 +1,60 @@
+{% from '_alerts_macros.j2' import alert %}
+{% from '_post_macros.j2' import min_post, admin_bottons, date_display %}
+
+{% extends 'base.html' %}
+
+{% block title %}
+{{ post.title }}
+{% endblock %}
+
+{% block content %}
+{{ alert('m-3') }}
+<div class="container py-5">
+    <div class="row">
+        <article class="col-lg-8">
+            <section>
+                <h1 class="post__title">{{ post.title }}</h1>
+                <h3 class="post__subtitle">{{ post.subtitle }}</h3>
+            </section>
+            {% if post.image %}
+            <div class="d-flex justify-content-start">
+                <img class="img-fluid" src="{{ post.image.link() }}">
+            </div>
+            {% endif %}
+            <section class="post__body">
+                {{ post.text|safe }}
+            </section>
+            <div class="row d-flex justify-content-space-between pb-2">
+                <section class="post__tags col-sm-8 pb-2">
+                    {% for tag in post.tags %}
+                    <a href="{{ url_for('posts_bp.tag_posts', slug=tag.slug) }}"
+                        class="badge badge-primary">{{ tag.value }}</a>
+                    {% endfor %}
+                </section>
+                <div class="col-sm-4">
+                    <div class="d-flex justify-content-sm-end align-items-center">
+                        {{ date_display(post.date) }}
+                    </div>
+                </div>
+                {% if not current_user.is_anonymous and current_user.is_author(post) %}
+                <section class="post__admin-panel col-12">
+                    {{ admin_bottons(post.slug, "Змінити", "Видалити") }}
+                </section>
+                {% endif %}
+            </div>
+        </article>
+
+        <div class="col-lg-4 mt-5 scrollfix">
+            <div class="jumbotron pt-2 pb-5">
+                <span class="badge badge-warning mb-2">Новинка!</span>
+                {% for new_post in new_posts %}
+                    {{ min_post(new_post, current_user, 'primary') }}
+                {% if not loop.last %}
+                    <br class="my-1">
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% from '_alerts_macros.j2' import  alert%}
+{% from '_post_macros.j2' import carusel_post %}
+
+{% extends 'base.html' %}
+
+{% block title %}
+    Головна
+{% endblock  %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock  %}
+
+{% block content %}
+<!-- Quote of Taras Shecchenko. -->
+{{ alert("m-0") }}
+
+<article class="quote bg-warning py-5">
+    <div class="container">
+        <div class="row justify-content-md-around align-items-center">
+            <aside class="quote__text col-md-6 ">
+                <p class="animated fadeInLeft">
+                    Мова рідна,<br>
+                    слово рідне,<br>
+                    хто вас забуває,<br>
+                    той у грудях не серденько,<br>
+                    тільки камінь має.<br>
+                </p>
+                <span class="quote__author animated fadeInLeft">Т. Г. Шевченко</span>
+            </aside>
+            <div class="col-md-5 d-flex justify-content-center py-5">
+                <img class="quote__img img-fluid animated fadeInRight" src="{{ url_for('static', filename='img/shevchenko.svg') }}"
+                    alt='Т. Шевченко'>
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- Block introduction to the site features. -->
+<article class="introduction container py-5">
+    <section class="introduction__title row pt-5">
+        <div class="col">
+            <h3 class="title">Вітаємо!</h3>
+            <div class="col-10 mx-auto">
+                <p>Ви знаходетесь на веб-сайті вчителя української мови та літератури з міста Бердичів (ЗОШ №5 I-III
+                    ступенів) Киби Інни Володимирівни.</p>
+            </div>
+        </div>
+    </section>
+    <section class="introduction__capabilityes row pt-3">
+
+        <section class="capability col-lg-4 d-flex justify-content-start py-2">
+            <div class="pr-4">
+                <i class="fas fa-book-open fa-3x"></i>
+            </div>
+            <div>
+                <h4 class="capability-title">
+                    <a class="stretched-link text-dark" href="{{ url_for('posts_bp.all_posts') }}">
+                        Статті
+                    </a>
+                </h4>
+                <p class="capability-description">Читайте статті з української мови та літератури на цьому ресурсі.
+                </p>
+            </div>
+        </section>
+
+        <section class="capability col-lg-4 d-flex justify-content-start py-2">
+            <div class="pr-4">
+                <i class="fas fa-award fa-3x"></i>
+            </div>
+            <div>
+                <h4 class="capability-title">
+                    <a class="stretched-link text-dark" href="{{ url_for('index') }}">
+                        Оцінки
+                    </a>
+                </h4>
+                <p class="capability-description">Якщо ти - учень, можешь подивитися свої оцінки.</p>
+            </div>
+        </section>
+
+        <section class="capability col-lg-4 d-flex justify-content-start py-2">
+            <div class="pr-4">
+                <i class="fas fa-microscope fa-3x"></i>
+            </div>
+            <div>
+                <h4 class="capability-title">
+                    <a class="stretched-link text-dark" href="{{ url_for('index') }}">
+                        Аналізуй
+                    </a>
+                </h4>
+                <p class="capability-description">У твоєму кабінеті є інстументи для аналізу твого прогресу в
+                    навчанні.</p>
+            </div>
+        </section>
+    </section>
+</article>
+
+<!-- Latest articles -->
+<article class="latest-articles bg-primary">
+    <div class="container">
+        <div class="raw">
+            <section class="latest-articles__title col-12 d-flex justify-content-center py-5">
+                <h3 class="title text-warning">Останні статті</h3>
+            </section>
+        </div>
+
+        <div class="row">
+            <section class="carusel col">
+                <div id="carouselControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for post in posts %}
+                            {{ carusel_post(post, current_user, is_active=loop.first ) }}
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev"></a>
+                    <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next"></a>
+                </div>
+            </section>
+        </div>
+    </div>
+</article>
+
+<!-- Footer -->
+<footer class="footer bg-primary container-fluid py-5">
+    <div class="row text-warning">
+        <section class="footer__title col-12">
+            <h3 class="title">Пиши нам!</h3>
+            <p>Нам дуже важливий зворотній зв'язок з вами.</p>
+        </section>
+        <address class="col-12 d-flex flex-column justify-content-around align-items-center">
+            <a class="text-warning" href="mailto:kiba.inna@gmaile.com">Киба Інна Володимирівна</a>
+            <a class="text-warning" href="mailto:vestigor0@gmaile.com">Розробники веб-сторінки</a>
+        </address>
+    </div>
+</footer>
+{% endblock  %}

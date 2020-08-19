@@ -1,0 +1,54 @@
+{% from '_alerts_macros.j2' import alert %}
+{% from '_form_errors_macros.j2' import field_error_handler %}
+{% extends 'base.html' %}
+
+{% block title %}
+    Вхід
+{% endblock  %}
+
+{% block content %}
+    <!-- Login Form -->
+
+    {{alert('mx-5 my-3')}}
+    <section class="login-form container py-5 mt-5">
+        <div class="row d-flex justify-content-center">
+            <form class="card border-primary d-flex flex-column justify-content-center" method="POST">
+                {{ login_form.hidden_tag() }}
+                <div class="card-header text-center">Авторизація</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                            {{ login_form.name(class_="form-control", id="mainLoginInput", placeholder="Введіть логін") }}
+                            {{ field_error_handler(login_form.name, 'my-2') }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                            </div>
+                            {{ login_form.password(class_="form-control", id="mainPasswordInput", placeholder="Пароль") }}
+                            {{ field_error_handler(login_form.password, 'my-2') }}
+                        </div>
+                    </div>
+                    <div class="form-group form-check">
+                        {{ login_form.is_remember(class_="form-check-input", id="mainLoginCheck") }}
+                        {{ login_form.is_remember.label(class_="form-check-label", for="mainLoginCheck") }}
+                    </div>
+                    <div class="form-group">
+                        {{ login_form.recaptcha }}
+                    </div>
+                    {{ login_form.submit(class_="btn btn-primary  btn-block", id="mainSubmit") }}
+                </div>
+            </form>
+        </div>
+    </section>
+
+{% endblock  %}

@@ -1,0 +1,132 @@
+{% from '_alerts_macros.j2' import  alert%}
+{% from '_form_errors_macros.j2' import  field_error_handler%}
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ title }}
+{% endblock  %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('.static', filename='css/tagsinput.css') }}">
+<link rel="stylesheet" href="{{ url_for('.static', filename='css/create-post.css') }}">
+{% endblock  %}
+
+{% block content %}
+{{ alert('m-3') }}
+<article class="container new-post pt-5">
+    <div class="raw">
+        <form class="new-post-form col-10 mx-auto" method="POST" enctype="multipart/form-data">
+            {{ post_form.csrf_token }}
+            <div class="form-group">
+                {{ post_form.title.label(for="inputTitle") }}
+                {# <label for="inputTitle">Заголовок</label> #}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fas fa-pen-nib"></i>
+                        </div>
+                    </div>
+                    {{ post_form.title(class_="form-control", id="inputTitle", placeholder="Введіть заголовок") }}
+                    {# <input type="text" class="form-control" id="inputTitle" placeholder="Введіть заголовок"> #}
+                </div>
+                {{ field_error_handler(post_form.title, 'my-2') }}
+            </div>
+
+            <div class="form-group">
+                {{ post_form.subtitle.label(for="inputSubtitle") }}
+                {#<label for="inputSubtitle">Підзаголовок</label>#}
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fas fa-align-center"></i>
+                        </div>
+                    </div>
+                    {{ post_form.subtitle(class_="form-control", id="inputSubtitle", placeholder="Введіть підзаголовок") }}
+                    {#<input type="text" class="form-control" id="inputSubtitle" placeholder="Введіть підзаголовок">#}
+                </div>
+                {{ field_error_handler(post_form.subtitle, 'my-2') }}
+            </div>
+
+            <div class="form-group">
+                {{ post_form.text.label(for="inputArticleBody") }}
+                {#<label for="inputArticleBody">Оснонвний текст статті</label>#}
+                {{ post_form.text(class_="form-control", id="inputArticleBody") }}
+                {#<textarea class="form-control" id="inputArticleBody"></textarea>#}
+                {{ field_error_handler(post_form.text, 'my-2') }}
+            </div>
+
+            <nav class="form-group">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="tags-tab" data-toggle="tab" href="#tagsTab" role="tab"
+                            aria-controls="tagsTab" aria-selected="true">
+                            Теги <i class="fas fa-tags"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="image-tab" data-toggle="tab" href="#imageTab" role="tab"
+                            aria-controls="imageTab" aria-selected="false">
+                            Зображення <i class="fas fa-file-image"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="date-tab" data-toggle="tab" href="#dateTab" role="tab"
+                            aria-controls="dateTab" aria-selected="false">
+                            Дата <i class="fas fa-calendar-alt"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show py-3 active" id="tagsTab" role="tabpanel" aria-labelledby="tags-tab">
+                        {{ post_form.tags.label(for="inputTags") }}
+                        {#<label for="inputTags">Введіть теги:</label>#}
+                        {{ post_form.tags(data_role="tagsinput", id="inputTags") }}
+                        {#<select multiple data-role="tagsinput"></select>#}
+                    </div>
+                    <div class="tab-pane fade py-3" id="imageTab" role="tabpanel" aria-labelledby="image-tab">
+                        <div class="form-group">
+
+                            <div class="input-group py-3">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-file"></i>
+                                    </div>
+                                </div>
+                                <div class="custom-file">
+                                    {{ post_form.image(class_="custom-file-input", id="inputImageFile") }}
+                                    {#<input type="file" class="custom-file-input" id="inputImageFile">#}
+                                    {{ post_form.image.label(class_="custom-file-label", for="inputImageFile") }}
+                                    {#<label class="custom-file-label" for="inputImageFile">
+                                        <span id="fileName">Виберіть файл</span>
+                                    </label>#}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade py-3" id="dateTab" role="tabpanel" aria-labelledby="date-tab">
+                        <div class="form-group">
+                            {{ post_form.date.label(for="inputDate") }}
+                            {#<label for="inputDate">Дата публікації:</label>#}
+                            {{ post_form.date(class_="form-control", id="inputDate") }}
+                            {#<input type="date" class="form-control" id="inputDate" />#}
+                        </div>
+                    </div>
+
+                </div>
+                {{ field_error_handler(post_form.tags) }}
+                {{ field_error_handler(post_form.image) }}
+                {{ field_error_handler(post_form.date) }}
+            </nav>
+
+            {{ post_form.submit(class_="btn btn-primary btn-block") }}
+            {#<button type="submit" class="btn btn-primary btn-block">Ствоити пост</button>#}
+        </form>
+    </div>
+</article>
+{% endblock  %}
+
+{% block script %}
+<script src="{{ url_for('.static', filename='js/tagsinput.js') }}"></script>
+<script src="{{ url_for('.static', filename='js/createPost.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% from '_alerts_macros.j2' import alert %}
+{% from '_form_errors_macros.j2' import  field_error_handler%}
+{% extends 'base.html' %}
+
+{% block title %}
+    Регістрація
+{% endblock  %}
+
+{% block content %}
+    <!-- Registration Form -->
+    {{alert('mx-5 my-3')}}
+    <section class="registration-form container py-5 mt-5">
+        <div class="row d-flex justify-content-center">
+            <form class="card text-center border-primary d-flex flex-column justify-content-center" method="POST">
+                {{ registration_form.hidden_tag() }}
+                <div class="card-header">Реєстрація</div>
+                <div class="card-body">
+                    <div class="form-group ">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                            {{ registration_form.name(class_="form-control", id="mainRegistrationInput", placeholder="Введіть логін") }}
+                        </div>
+                        {{ field_error_handler(registration_form.name, 'mt-2') }}
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-at"></i>
+                                </div>
+                            </div>
+                            {{ registration_form.email(class_="form-control", id="mainRegistrationInput", placeholder="Введіть пошту") }}
+                        </div>
+                        {{ field_error_handler(registration_form.email, 'mt-2') }}
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                            </div>
+                            {{ registration_form.password(class_="form-control", id="mainPasswordInput", placeholder="Введіть пароль") }}
+                        </div>
+                        {{ field_error_handler(registration_form.password, 'mt-2') }}
+                    </div>
+                     <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-passport"></i>
+                                </div>
+                            </div>
+                            {{ registration_form.password2(class_="form-control", id="mainPassword2Input", placeholder="Повторіть пароль") }}
+                        </div>
+                         {{ field_error_handler(registration_form.password2, 'mt-2') }}
+                     </div>
+                        <div class="form-group">
+                        {{ registration_form.recaptcha }}
+                    </div>
+                    {{ registration_form.submit(class_="btn btn-primary btn-block", id="mainSubmit") }}
+                </div>
+            </form>
+        </div>
+    </section>
+    </div>
+
+{% endblock  %}

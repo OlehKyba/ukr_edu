@@ -1,0 +1,24 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pep8 = "*"
+autopep8 = "*"
+
+[packages]
+flask = "*"
+python-dotenv = "*"
+flask-sqlalchemy = "*"
+flask-wtf = "*"
+flask-login = "*"
+python-slugify = "*"
+boto3 = "*"
+celery = {extras = ["redis"],version = "*"}
+dependency-injector = "*"
+flask-migrate = "*"
+psycopg2-binary = "*"
+
+[requires]
+python_version = "3.7"

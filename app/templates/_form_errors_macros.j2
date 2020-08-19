@@ -1,0 +1,7 @@
+{% from '_alerts_macros.j2' import  raw_alert%}
+
+{% macro field_error_handler(form_field, class="", category="danger") %}
+   {% for error in form_field.errors %}
+        {{ raw_alert(error, category, class) }}
+   {% endfor %}
+{% endmacro %}
